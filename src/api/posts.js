@@ -9,3 +9,8 @@ const posts = [
 export function getPosts() {
   return posts;
 }
+
+export function getPostById(id) {
+  // const numberId = parseInt(id) route.index에서 parseInt를 해줬기 때문에 따로 안함
+  return posts.find(item => item.id === id);
+}

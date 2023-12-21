@@ -7,14 +7,20 @@
         <PostItemVuew :title="post.title" :content="post.content" :createdAt="post.createdAt" @click="goPage(post.id)"></PostItemVuew>
       </div>
     </div>
+    <hr class="my-4">
+    <AppCard>
+      <PostDetailView :id='1'></PostDetailView>
+    </AppCard>
   </div>
 </template>
 
 <script setup>
   import PostItemVuew from '@/components/posts/PostItem.vue';
+  import PostDetailView from './PostDetailView.vue';
+  import AppCard from '@/components/AppCard.vue';
   import {getPosts} from '@/api/posts'
   import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+  import { useRouter } from 'vue-router';
   
   const router = useRouter();
   const posts = ref([]);
