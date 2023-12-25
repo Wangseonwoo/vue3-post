@@ -24,8 +24,13 @@
   
   const router = useRouter();
   const posts = ref([]);
-  const fetchPosts = () => {
-    posts.value = getPosts();
+  const fetchPosts = async () => {
+    try {
+      const response = await getPosts();
+      posts.value = response.data;
+    } catch (error) {
+      console.error(error);
+    }
   }
   onMounted(fetchPosts);
 

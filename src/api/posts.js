@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const posts = [
   {id: 1, title: '제목1', content: '내용1', createdAt: '2020-01-01'},
   {id: 2, title: '제목2', content: '내용2', createdAt: '2020-02-02'},
@@ -7,10 +9,21 @@ const posts = [
 ]
 
 export function getPosts() {
-  return posts;
+  return axios.get('http://localhost:5000/posts');
 }
 
 export function getPostById(id) {
   // const numberId = parseInt(id) route.index에서 parseInt를 해줬기 때문에 따로 안함
-  return posts.find(item => item.id === id);
+  // return posts.find(item => item.id === id);
+  return axios.get(`http://localhost:5000/posts/${id}`);
+}
+
+export function createPost(data) {
+  return axios.post('http://localhost:5000/posts', data);
+}
+export function updatePost(id,data) {
+  return axios.put(`http://localhost:5000/posts/${id}`, data);
+}
+export function deletePost(id) {
+  return axios.delete(`http://localhost:5000/posts/${id}`);
 }
