@@ -33,7 +33,7 @@
 
   const props = defineProps({
     // id: String route.index에서 props를 true로 설정 했을떄
-    id: Number, // parseInt를 활용해서 props를 전송할 때
+    id: String, // parseInt를 활용해서 props를 전송할 때
   })
   const router =  useRouter();
   const post = ref({});
