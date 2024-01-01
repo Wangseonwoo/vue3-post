@@ -4,7 +4,7 @@ import AboutView from '@/views/AboutView.vue';
 import PostCreateViewVue from '@/views/posts/PostCreateView.vue';
 import PostDetailViewVue from '@/views/posts/PostDetailView.vue';
 import PostEditViewVue from '@/views/posts/PostEditView.vue';
-import postListViewVue from '@/views/posts/postListView.vue';
+import PostListViewVue from '@/views/posts/PostListView.vue';
 import NotFoundView from '@/views/NotFoundView.vue';
 import NestedView from '@/views/nested/NestedView.vue';
 import NestedOneView from '@/views/nested/NestedOneView.vue';
@@ -25,7 +25,7 @@ const routes = [
   {
     path: '/posts',
     name: 'PostList',
-    component: postListViewVue,
+    component: PostListViewVue,
   },
   {
     path: '/posts/create',
