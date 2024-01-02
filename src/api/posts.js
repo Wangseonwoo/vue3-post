@@ -21,9 +21,15 @@ export function getPostById(id) {
 export function createPost(data) {
   return posts.post('', data);
 }
+
+// export function updatePost(id,data) {
+//   return posts.put(id, data);
+// } put은 전체를 수정할때 사용
+
 export function updatePost(id,data) {
-  return posts.put(id, data);
+  return posts.patch(id, data); // 일부분만 수정 가능
 }
+
 export function deletePost(id) {
   return posts.delete(id);
 }
