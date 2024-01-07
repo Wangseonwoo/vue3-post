@@ -6,7 +6,7 @@
     <hr class="my-4">
     <AppGrid :items="posts">
       <template v-slot="{item}">
-        <PostItemVuew :title="item.title" :content="item.content" :createdAt="item.createdAt" @click="goPage(item.id)" />
+        <PostItemVuew :title="item.title" :content="item.content" :createdAt="item.createdAt" @click="goPage(item.id)" @modal="openModal(item)" />
       </template>
     </AppGrid>
     <div class="row g-3">
@@ -15,6 +15,10 @@
     </div>
     <AppPagination :current-page="params._page" :page-count="pageCount" @page="page => (params._page = page)"/>
 
+    <Teleport to="#modal">
+      <PostModal v-model="show" :title="modalTilte" :content="modalContent" :createdAt="modalCreatedAt"/>
+    </Teleport>
+    
     <hr class="my-5">
     <AppCard>
       <PostDetailView :id='1'></PostDetailView>
@@ -29,6 +33,7 @@
   import AppPagination from '@/components/AppPagination.vue';
   import AppGrid from '@/components/AppGrid.vue';
   import PostFilter from '@/components/posts/PostFilter.vue';
+  import PostModal from '@/components/posts/PostModal.vue';
   import {getPosts} from '@/api/posts'
   import { computed, ref, watchEffect } from 'vue';
   import { useRouter } from 'vue-router';
@@ -62,6 +67,19 @@
     // router.push(`/posts/${id}`);
     router.push({name:'PostDetail', params: {id,}})
   }
+
+  // modal
+  const show = ref(false);
+  const modalTilte = ref('');
+  const modalContent = ref('');
+  const modalCreatedAt = ref('');
+  const openModal = ({title, content, createdAt}) => {
+    show.value = true;
+    modalTilte.value = title;
+    modalContent.value = content;
+    modalCreatedAt.value = createdAt;
+  };
+  
 </script>
 
 <style lang="scss" scoped>
