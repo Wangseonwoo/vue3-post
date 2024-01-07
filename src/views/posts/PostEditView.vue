@@ -8,7 +8,8 @@
           <button class="btn btn-primary">수정</button>
       </template>
     </PostForm>
-    <AppAlert :show="showAlert" :message="alertMessage" :type="alertType"/>
+    <!-- <AppAlert :show="showAlert" :message="alertMessage" :type="alertType"/> -->
+    <AppAlert :items="alerts" />
   </div>
 </template>
 
@@ -33,7 +34,7 @@ import AppAlert from '@/components/AppAlert.vue'
       setForm(response.data);
     } catch(error) {
       console.error(error);
-      vAlert('네트워크 오류!!!')
+      vAlert(error.message);
     }
   }
   const setForm = ({title, content, createdAt}) => {
@@ -51,22 +52,26 @@ import AppAlert from '@/components/AppAlert.vue'
     try {
       await updatePost(id,{ ...form.value });
       // router.push({name: 'PostDetail', params: {id}})
-      vAlert('수정이 완료되었습니다!!!', 'success')
+      vAlert('수정이 완료되었습니다!!!', 'success');
     } catch(error) {
       console.error(error);
+      vAlert(error.message);
     }
   }
 
   // alert
-  const showAlert = ref(false);
-  const alertMessage = ref('');
-  const alertType = ref('error');
+  // const showAlert = ref(false);
+  // const alertMessage = ref('');
+  // const alertType = ref('error');
+  const alerts= ref([]);
   const vAlert = (message, type = 'error') => {
-    showAlert.value = true;
-    alertMessage.value = message;
-    alertType.value = type;
+    alerts.value.push({message, type});
+    // showAlert.value = true;
+    // alertMessage.value = message;
+    // alertType.value = type;
     setTimeout(()=> {
-      showAlert.value = false
+      // showAlert.value = false
+      alerts.value.shift();
     }, 2000)
   }
 </script>
