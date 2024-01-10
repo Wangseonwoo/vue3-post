@@ -2,7 +2,7 @@
   <form>
       <div class="mb-3">
         <label for="title" class="form-label">제목</label>
-        <input :value="title" @input="$emit('update:title', $event.target.value)" type="text" class="form-control" id="title">
+        <input v-color="'blue'" v-focus :value="title" @input="$emit('update:title', $event.target.value)" type="text" class="form-control" id="title">
       </div>
       <div class="mb-3">
         <label for="content" class="form-label">내용</label>
@@ -15,6 +15,11 @@
 </template>
 
 <script setup>
+// const vFocus = {  // Custom Directives 지역 선언 방식
+//   mounted: el => {
+//     el.focus();
+//   }
+// }
 defineProps({
   title: String,
   content: String,

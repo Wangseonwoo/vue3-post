@@ -6,12 +6,15 @@ import router from '@/router'
 // import objPlugins from './plugins/obj';
 // import person from './plugins/person';
 import globalComponents from './plugins/global-components';
+// import focus from '@/directives/focus'; // Custom Directives 전역 선언 방식
+import globalDirectives from './plugins/global-directives'; // plugin을 활용하여 다수의 Custom Directives 사용
 
 const app = createApp(App);
 // app.use(objPlugins, {name: '왕선우'});
 // app.use(funcPlugins);
 // app.use(person, {name: '홍길동'});
 app.use(globalComponents);
+app.use(globalDirectives);
 app.use(router);
 app.mount('#app');
 
