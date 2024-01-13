@@ -3,17 +3,25 @@
     <h2>게시글 목록</h2>
     <hr class="my-4">
     <PostFilter v-model:title="params.title_like" v-model:limit="params._limit"/>
+
     <hr class="my-4">
-    <AppGrid :items="posts">
-      <template v-slot="{item}">
-        <PostItemVuew :title="item.title" :content="item.content" :createdAt="item.createdAt" @click="goPage(item.id)" @modal="openModal(item)" />
-      </template>
-    </AppGrid>
-    <div class="row g-3">
-      <div v-for="post in posts" :key="post.id" class="co1-4">
+
+    <AppLoading v-if="loading"/>
+
+    <AppError v-else-if="error" :message="error.message"/>
+
+    <template v-else>
+      <AppGrid  :items="posts">
+        <template v-slot="{item}">
+          <PostItemVuew :title="item.title" :content="item.content" :createdAt="item.createdAt" @click="goPage(item.id)" @modal="openModal(item)" />
+        </template>
+      </AppGrid>
+      <div class="row g-3">
+        <div v-for="post in posts" :key="post.id" class="co1-4">
+        </div>
       </div>
-    </div>
-    <AppPagination :current-page="params._page" :page-count="pageCount" @page="page => (params._page = page)"/>
+      <AppPagination :current-page="params._page" :page-count="pageCount" @page="page => (params._page = page)"/>
+    </template>
 
     <Teleport to="#modal">
       <PostModal v-model="show" :title="modalTilte" :content="modalContent" :createdAt="modalCreatedAt"/>
@@ -34,9 +42,12 @@
   import {getPosts} from '@/api/posts'
   import { computed, ref, watchEffect } from 'vue';
   import { useRouter } from 'vue-router';
+
   
   const router = useRouter();
   const posts = ref([]);
+  const error = ref(null);
+  const loading = ref(false);
   const params = ref({
     _sort: 'createdAt',
     _order: 'desc',
@@ -51,11 +62,14 @@
 
   const fetchPosts = async () => {
     try {
+      loading.value = true;
       const {data, headers} = await getPosts(params.value);
       posts.value = data;
       totalCount.value = headers['x-total-count'];
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      error.value =err;
+    } finally {
+      loading.value = false;
     }
   }
   watchEffect(fetchPosts);

@@ -1,9 +1,14 @@
 <template>
-  <div>
+  <AppLoading v-if="loading" />
+  <AppError v-else-if="error" :message="error.message"/>
+  <div v-else>
+    <AppError v-if="removeError" :message="removeError.message"/>
     <h2>{{post.title}}</h2>
     <p>{{post.content}}</p>
-    <p class="text-muted">{{$dayjs(post.createdAt).format('YYYY. MM. DD HH:mm:ss')}}</p>
+
     <hr class="my-4">
+    <p class="text-muted">{{$dayjs(post.createdAt).format('YYYY. MM. DD HH:mm:ss')}}</p>
+    
     <div class="row g-2">
       <div class="col-auto">
         <button class="btn btn-outline-dark">이전글</button>
@@ -20,7 +25,13 @@
         <button class="btn btn-outline-primary" @click="goEditPage">수정</button>
       </div>
       <div class="col-auto">
-        <button class="btn btn-outline-danger" @click="remove">삭제</button>
+        <button class="btn btn-outline-danger" @click="remove" :disabled="removeLoading">
+          <template v-if="removeLoading">
+              <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+              <span class="visually-hidden" role="status">Loading...</span>
+            </template>
+            <template v-else> 삭제 </template>
+        </button>
       </div>
     </div>
   </div>
@@ -37,6 +48,10 @@
   })
   const router =  useRouter();
   const post = ref({});
+  const error = ref(null);
+  const loading = ref(false);
+  const removeError = ref(null);
+  const removeLoading = ref(false);
   
   //  ref 
   //  장) 객체 할당 가능, 일관성
@@ -48,10 +63,13 @@
   
   const fetchPost = async () => {
     try {
+      loading.value = true;
       const response = await getPostById(props.id)
       setPost(response.data);
-    } catch(error) {
-      console.error(error);
+    } catch(err) {
+      error.value = err;
+    } finally {
+      loading.value = false;
     }
   }
   const setPost = ({title, content, createdAt}) => {
@@ -66,10 +84,13 @@
       if (confirm('삭제 하겠습니까?') === false) {
         return
       }
+      removeLoading.value = true;
       await deletePost(props.id)
       router.push({name:'PostList'});
-    } catch(error) {
-      console.error(error);
+    } catch(err) {
+      removeError.value = err;
+    } finally {
+      removeLoading.value = false;
     }
   }
 
