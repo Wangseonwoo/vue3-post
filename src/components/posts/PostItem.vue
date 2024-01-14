@@ -25,6 +25,7 @@ import { inject } from 'vue';
     title: {
       type: String,
       required: true,
+      default: '기본',
     },
     content: {
       type: String,
