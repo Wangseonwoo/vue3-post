@@ -13,7 +13,7 @@
     <template v-else>
       <AppGrid  :items="posts">
         <template v-slot="{item}">
-          <PostItemVuew :title="item.title" :content="item.content" :createdAt="item.createdAt" @click="goPage(item.id)" @modal="openModal(item)" />
+          <PostItemVuew :title="item.title" :content="item.content" :createdAt="item.createdAt" @click="goPage(item.id)" @modal="openModal(item)" @preview="selectPreview(item.id)" />
         </template>
       </AppGrid>
       <div class="row g-3">
@@ -26,11 +26,13 @@
     <Teleport to="#modal">
       <PostModal v-model="show" :title="modalTilte" :content="modalContent" :createdAt="modalCreatedAt"/>
     </Teleport>
-    
-    <hr class="my-5">
-    <AppCard>
-      <PostDetailView :id='1'></PostDetailView>
-    </AppCard>
+
+    <template v-if="previewId">
+      <hr class="my-5">
+      <AppCard>
+        <PostDetailView :id='previewId'></PostDetailView>
+      </AppCard>
+    </template>
   </div>
 </template>
 
@@ -45,6 +47,10 @@
 
   
   const router = useRouter();
+
+  const previewId = ref(null);
+  const selectPreview = (id) => previewId.value =id;
+
   const posts = ref([]);
   const error = ref(null);
   const loading = ref(false);
