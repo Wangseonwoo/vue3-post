@@ -9,6 +9,7 @@ import globalComponents from './plugins/global-components';
 // import focus from '@/directives/focus'; // Custom Directives 전역 선언 방식
 import globalDirectives from './plugins/global-directives'; // plugin을 활용하여 다수의 Custom Directives 사용
 import dayjs from '@/plugins/dayjs';
+import { createPinia } from 'pinia';
 
 const app = createApp(App);
 // app.use(objPlugins, {name: '왕선우'});
@@ -18,6 +19,7 @@ app.use(globalComponents);
 app.use(globalDirectives);
 app.use(dayjs);
 app.use(router);
+app.use(createPinia());
 app.mount('#app');
 
 import 'bootstrap/dist/js/bootstrap.js';
