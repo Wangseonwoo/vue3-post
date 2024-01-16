@@ -4,16 +4,18 @@
   </Transition> -->
   <div class="app-alert">
   <TransitionGroup name="slide">
-    <div v-for="({message, type}, index ) in items" :key="index" class="alert" :class="typeStyle(type)" role="alert">{{ message }}</div>
+    <div v-for="({message, type}, index ) in alerts" :key="index" class="alert" :class="typeStyle(type)" role="alert">{{ message }}</div>
   </TransitionGroup>
   </div>
 </template>
 
 <script setup>
+import { useAlert } from '@/composables/alert';
+const { alerts } = useAlert();
+// defineProps({
+//   items: Array,
+// });
 
-defineProps({
-  items: Array,
-});
 const typeStyle = ((type) => type === 'error' ? 'alert-danger' : 'alert-success');
 // const props =defineProps({
 //   show: {
