@@ -2,7 +2,7 @@
   <div>
     <h2>게시글 목록</h2>
     <hr class="my-4">
-    <PostFilter v-model:title="params.title_like" v-model:limit="params._limit"/>
+    <PostFilter v-model:title="params.title_like" :limit="params._limit" @update:limit="changeLimit"/>
 
     <hr class="my-4">
 
@@ -11,7 +11,7 @@
     <AppError v-else-if="error" :message="error.message"/>
 
     <template v-else>
-      <AppGrid  :items="posts">
+      <AppGrid  :items="posts" col-class="col-12 col-sm-6 col-md-4 col-lg-3">
         <template v-slot="{item}">
           <PostItemVuew :title="item.title" :content="item.content" :createdAt="item.createdAt" @click="goPage(item.id)" @modal="openModal(item)" @preview="selectPreview(item.id)" />
         </template>
@@ -58,10 +58,14 @@
     _sort: 'createdAt',
     _order: 'desc',
     _page: 1,
-    _limit: 3, // 한페이지에 보일 갯수
+    _limit: 6, // 한페이지에 보일 갯수
     title_like: '',
   })
 
+  const changeLimit = (value) => {
+    params.value._limit = value;
+    params.value._page = 1;
+  }
   // pagination
   const totalCount = ref(0);
   const pageCount = computed(()=> Math.ceil(totalCount.value / params.value._limit),);
