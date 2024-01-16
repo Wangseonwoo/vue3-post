@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-  import {  useRouter } from 'vue-router';
+  import {  onBeforeRouteLeave, onBeforeRouteUpdate, useRouter } from 'vue-router';
   import { getPostById, deletePost } from '@/api/posts';
   import { ref } from 'vue';
 
@@ -100,6 +100,23 @@
   const goEditPage = () => {
     router.push({name:'PostEdit', params:{ id:props.id } });
   }
+  // onBeforeRouteUpdated 와 onBeforeRouteLeave는 셋업 후에 호출이 되기 때문에 composition api에서 사용가능 
+  onBeforeRouteUpdate(() => {
+    console.log('onBeforeRouteUpdate');
+  })
+
+  onBeforeRouteLeave(() => {
+    console.log('onBeforeRouteLeave');
+  })
+</script>
+
+<script>
+export default {
+  // beforeRouteEnter는 셋업 이전에 호출이 되기 때문에 options api에서 호출 해야한다.
+  beforeRouteEnter() {
+    console.log('beforeRouteEnter');
+  }
+}
 </script>
 
 <style lang="scss" scoped>
